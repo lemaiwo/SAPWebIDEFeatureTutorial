@@ -1,0 +1,98 @@
+{
+	"name": "myfirstplugin",
+	"description": "My first plugin",
+	"i18n": "myfirstplugin/i18n/i18n",
+	"requires": {
+		"services": [
+			"usernotification",
+			"log",
+			"command",
+			"commandGroup",
+			"perspective"
+		]
+	},
+	"provides": {
+		"services": {
+			"sample": {
+				"implements": "myfirstplugin.service.Sample",
+				"module": "myfirstplugin/service/Sample"
+			},
+			"myfirstviewservice": {
+				"implements": "sap.watt.common.service.ui.Part",
+				"module": "myfirstplugin/service/MyFirstViewService"
+			},
+			"myfirstservice": {
+				"implements": "myfirstplugin.service.MyFirstService",
+				"module": "myfirstplugin/service/MyFirstService"
+			}
+		},
+		"interfaces": {
+			"myfirstplugin.service.Sample": "myfirstplugin/service/Sample",
+			"myfirstplugin.service.MyFirstService": "myfirstplugin/service/MyFirstService"
+		}
+	},
+	"configures": {
+		"services": {
+			"perspective:views": [{
+				"id": "myfirstview",
+				"service": "@myfirstviewservice"
+			}],
+			"perspective:viewToAreaMapping": [{
+				"view": "myfirstview",
+				"perspective": "development",
+				"area": "right"
+			}],
+			"command:commands": [{
+				"id": "myfirstviewcommand",
+				"label": "Open View",
+				"icon": "sap-icon://display",
+				"service": {
+					"implements": "sap.watt.common.service.ide.AbstractUIPartToggler",
+					"module": "sap.watt.common.perspective/command/AbstractUIPartToggler",
+					"configuration": {
+						"id": "myfirstviewcommand",
+						"service": "@myfirstviewservice",
+						"perspective": "development"
+					}
+				},
+				"keyBinding": "mod+shift+8"
+			}, {
+				"id": "myfirstplugin.helloWorld",
+				"label": "{i18n>command_helloWorld}",
+				"service": "myfirstplugin/command/HelloWorld"
+			}],
+
+			"commandGroup:groups": [{
+				"id": "tools.sample",
+				"label": "{i18n>commandgroup_sample}"
+			}, {
+				"id": "tools.sample.helloWorld"
+			}],
+
+			"commandGroup:items": [{
+				"parent": "applicationRightSidebar",
+				"command": "myfirstviewcommand",
+				"prio": 101
+			}, {
+				"parent": "file.new",
+				"type": "menu",
+				"group": "tools.sample",
+				"prio": 100
+			}, {
+				"parent": "tools.sample",
+				"type": "inline",
+				"group": "tools.sample.helloWorld",
+				"prio": 10
+			}, {
+				"parent": "tools.sample.helloWorld",
+				"type": "action",
+				"command": "myfirstplugin.helloWorld",
+				"prio": 10
+			}]
+		}
+	},
+
+	"subscribes": {
+		"sample:notificationDisplayed": "sample:onAfterNotificationDisplayed"
+	}
+}

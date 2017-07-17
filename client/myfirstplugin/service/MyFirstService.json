@@ -1,0 +1,18 @@
+{
+	"name": "myfirstplugin.service.MyFirstService",
+	"description": "Example service",
+	"methods": {
+		"getValueFromService": {
+			"description": "get value",
+			"params": [{
+				"name": "name",
+				"type": "string",
+				"description": "name"
+			}],
+			"returns": {
+				"type": "string",
+				"description": "text"
+			}
+		}
+	}
+}

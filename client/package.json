@@ -1,0 +1,11 @@
+{
+	"name": "myfirstfeature",
+	"title": "myfirstfeature",
+	"version": "1.0.0",
+	"description": "My first feature",
+	"homepage": "",
+	"icon": "",
+	"bundledPlugins": {
+		"myfirstplugin": "file:myfirstplugin"
+	}
+}
